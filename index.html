@@ -108,6 +108,7 @@
             var easyButton = BABYLON.GUI.Button.CreateSimpleButton("onoff", "Easy");
             easyButton.onPointerClickObservable.add(() => {
                 console.log('play video')
+                startVideo()
             });
             easyButton.width = 0.5;
             easyButton.height = "80px";
