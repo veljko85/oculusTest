@@ -37,24 +37,10 @@
             height: 100%;
             touch-action: none;
         }
-
-        #cover {
-            width: 100vw;
-            height: 100vh;
-            position: absolute;
-            z-index: 5;
-            /* background-image: url("img/coverBackgoround.jpg"); */
-            background-color: #cccccc;
-
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
     </style>
 </head>
 
 <body>
-    <div id="cover"></div>
     <canvas id="renderCanvas"></canvas>
     <script>
         var canvas = document.getElementById("renderCanvas");
@@ -71,17 +57,15 @@
         var scene = null;
         var sceneToRender = null;
         var createDefaultEngine = function () { return new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true, disableWebGL2Support: false }); };
-        var createScene = async function () {
+        var dome, tickCount = -240, zoomLevel = 1;
+
+        var createScene = function () {
 
             var scene = new BABYLON.Scene(engine);
-            var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -5), scene);
-            camera.setTarget(BABYLON.Vector3.Zero());
+            var camera = new BABYLON.ArcRotateCamera("Camera", 3.14, 1.5, 0, BABYLON.Vector3.Zero(), scene);
             camera.attachControl(canvas, true);
-            // camera.inputs.attached.mousewheel.detachControl(canvas);
-            var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
-            light.intensity = 0.7;
-
-
+            camera.inputs.attached.mousewheel.detachControl(canvas);
+            // function startVideo() {
             dome = new BABYLON.VideoDome(
                 "testdome",
                 ["video4.mp4"],
@@ -93,20 +77,20 @@
                 },
                 scene
             );
-
-
+            // }
+            // startVideo()
             // GUI
             var plane = BABYLON.Mesh.CreatePlane("plane", 1);
-            plane.position = new BABYLON.Vector3(0, 0, 0)
+            plane.position = new BABYLON.Vector3(5, 0, 5)
+            // plane.rotation = 0;
             var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane);
             var panel = new BABYLON.GUI.StackPanel();
             advancedTexture.addControl(panel);
 
-            var easyButton = BABYLON.GUI.Button.CreateSimpleButton("but", "Play");
+            var easyButton = BABYLON.GUI.Button.CreateSimpleButton("but", "Easy");
             easyButton.onPointerClickObservable.add(() => {
                 console.log('play video')
                 dome.videoTexture.video.play();
-
             });
             easyButton.width = "1000px";
             easyButton.height = "1000px";
@@ -115,26 +99,30 @@
             easyButton.fontSize = 300;
             panel.addControl(easyButton);
 
+            // scene.registerAfterRender(function () {
+            //     tickCount++;
+            //     if (zoomLevel == 1) {
+            //         if (tickCount >= 0) {
+            //             dome.fovMultiplier = (Math.sin(tickCount / 100) * 0.5) + 1.0;
+            //         }
+            //     } else {
+            //         dome.fovMultiplier = zoomLevel;
+            //     }
+            // });
 
-            const env = scene.createDefaultEnvironment();
-
-            const xr = await scene.createDefaultXRExperienceAsync({
-                floorMeshes: [env.ground]
-            });
-
-            var arButContainer =
-                document.getElementsByClassName("xr-button-overlay");
-            var arBut = document.getElementsByClassName("babylonVRicon");
-            console.log(arBut);
-            console.log(arBut[0]);
-            arBut[0].innerHTML = "Open Ar";
-            arBut[0].style.backgroundColor = "transparent";
-            arBut[0].style.backgroundImage = "none";
-            arBut[0].style.color = "black";
-            arBut[0].style.border = "3px solid black";
+            // scene.onPointerObservable.add(function (e) {
+            //     if (dome === undefined) { return; }
+            //     zoomLevel += e.event.wheelDelta * -0.0005;
+            //     if (zoomLevel < 0) { zoomLevel = 0; }
+            //     if (zoomLevel > 2) { zoomLevel = 2; }
+            //     if (zoomLevel == 1) {
+            //         tickCount = -60;
+            //     }
+            // }, BABYLON.PointerEventTypes.POINTERWHEEL);
 
             return scene;
         };
+
         window.initFunction = async function () {
 
 
@@ -153,8 +141,7 @@
             window.scene = createScene();
         };
         initFunction().then(() => {
-            scene.then(returnedScene => { sceneToRender = returnedScene; });
-
+            sceneToRender = scene
         });
 
         // Resize
