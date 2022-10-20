@@ -37,10 +37,24 @@
             height: 100%;
             touch-action: none;
         }
+
+        #cover {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            z-index: 5;
+            /* background-image: url("img/coverBackgoround.jpg"); */
+            background-color: #cccccc;
+
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
     </style>
 </head>
 
 <body>
+    <div id="cover"></div>
     <canvas id="renderCanvas"></canvas>
     <script>
         var canvas = document.getElementById("renderCanvas");
@@ -67,23 +81,37 @@
             var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
             light.intensity = 0.7;
 
+            function startVideo() {
+                dome = new BABYLON.VideoDome(
+                    "testdome",
+                    ["video2.mp4"],
+                    {
+                        resolution: 16,
+                        clickToPlay: true,
+                        useDirectMapping: false
+                    },
+                    scene
+                );
+            }
+            // startVideo()
 
-            dome = new BABYLON.VideoDome(
-                "testdome",
-                ["video2.mp4"],
-                {
-                    resolution: 16,
-                    clickToPlay: true,
-                    useDirectMapping: false
-                },
-                scene
-            );
 
             const env = scene.createDefaultEnvironment();
 
             const xr = await scene.createDefaultXRExperienceAsync({
                 floorMeshes: [env.ground]
             });
+
+            var arButContainer =
+                document.getElementsByClassName("xr-button-overlay");
+            var arBut = document.getElementsByClassName("babylonVRicon");
+            console.log(arBut);
+            console.log(arBut[0]);
+            arBut[0].innerHTML = "Open Ar";
+            arBut[0].style.backgroundColor = "transparent";
+            arBut[0].style.backgroundImage = "none";
+            arBut[0].style.color = "black";
+            arBut[0].style.border = "3px solid black";
 
             return scene;
         };
