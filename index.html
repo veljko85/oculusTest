@@ -102,17 +102,17 @@
             var panel = new BABYLON.GUI.StackPanel();
             advancedTexture.addControl(panel);
 
-            var easyButton = BABYLON.GUI.Button.CreateSimpleButton("onoff", "Easy");
+            var easyButton = BABYLON.GUI.Button.CreateSimpleButton("onoff", "Play");
             easyButton.onPointerClickObservable.add(() => {
                 console.log('play video')
                 dome.videoTexture.video.play();
 
             });
-            easyButton.width = "300px";
-            easyButton.height = "300px";
+            easyButton.width = "1000px";
+            easyButton.height = "1000px";
             easyButton.color = "white";
             easyButton.background = "green";
-            easyButton.fontSize = 100;
+            easyButton.fontSize = 300;
             panel.addControl(easyButton);
 
 
