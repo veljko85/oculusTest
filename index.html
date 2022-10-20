@@ -74,12 +74,9 @@
         var createScene = async function () {
 
             var scene = new BABYLON.Scene(engine);
-            // var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
-            // camera.setTarget(BABYLON.Vector3.Zero());
-            // camera.attachControl(canvas, true);
-            var camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 4, 3.8, new BABYLON.Vector3(0, 1, 0), scene);
+            var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
+            camera.setTarget(BABYLON.Vector3.Zero());
             camera.attachControl(canvas, true);
-            scene.activeCamera.beta += 0.8;
             // camera.inputs.attached.mousewheel.detachControl(canvas);
             var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
             light.intensity = 0.7;
@@ -96,11 +93,11 @@
                     scene
                 );
             }
-            startVideo()
+            // startVideo()
 
             // GUI
             var plane = BABYLON.Mesh.CreatePlane("plane", 1);
-            plane.position = new BABYLON.Vector3(0, 0, 0)
+            plane.position = new BABYLON.Vector3(0.4, 1.58, 0.4)
             var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane);
             var panel = new BABYLON.GUI.StackPanel();
             advancedTexture.addControl(panel);
@@ -108,7 +105,7 @@
             var easyButton = BABYLON.GUI.Button.CreateSimpleButton("onoff", "Easy");
             easyButton.onPointerClickObservable.add(() => {
                 console.log('play video')
-
+                startVideo()
             });
             easyButton.width = 0.5;
             easyButton.height = "80px";
