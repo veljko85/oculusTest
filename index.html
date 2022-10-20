@@ -95,6 +95,24 @@
             }
             // startVideo()
 
+            // GUI
+            var plane = BABYLON.Mesh.CreatePlane("plane", 1);
+            plane.position = new BABYLON.Vector3(0.4, 1.58, 0.4)
+            var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(plane);
+            var panel = new BABYLON.GUI.StackPanel();
+            advancedTexture.addControl(panel);
+
+            var easyButton = BABYLON.GUI.Button.CreateSimpleButton("onoff", "Easy");
+            easyButton.onPointerClickObservable.add(() => {
+                console.log('play video')
+            });
+            easyButton.width = 0.5;
+            easyButton.height = "80px";
+            easyButton.color = "white";
+            easyButton.background = "green";
+            easyButton.fontSize = 60;
+            panel.addControl(easyButton);
+
 
             const env = scene.createDefaultEnvironment();
 
