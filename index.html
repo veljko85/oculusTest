@@ -81,19 +81,19 @@
             var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
             light.intensity = 0.7;
 
-            function startVideo() {
-                dome = new BABYLON.VideoDome(
-                    "testdome",
-                    ["video2.mp4"],
-                    {
-                        resolution: 16,
-                        clickToPlay: true,
-                        useDirectMapping: false
-                    },
-                    scene
-                );
-            }
-            // startVideo()
+
+            dome = new BABYLON.VideoDome(
+                "testdome",
+                ["video2.mp4"],
+                {
+                    autoPlay: false,
+                    resolution: 16,
+                    clickToPlay: false,
+                    useDirectMapping: false
+                },
+                scene
+            );
+
 
             // GUI
             var plane = BABYLON.Mesh.CreatePlane("plane", 1);
@@ -105,7 +105,8 @@
             var easyButton = BABYLON.GUI.Button.CreateSimpleButton("onoff", "Easy");
             easyButton.onPointerClickObservable.add(() => {
                 console.log('play video')
-                startVideo()
+                dome.videoTexture.video.play();
+
             });
             easyButton.width = 0.5;
             easyButton.height = "80px";
